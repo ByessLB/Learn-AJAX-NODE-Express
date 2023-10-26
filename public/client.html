@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ajax</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.5.1/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  </head>
+  <body>
+
+    <button id="recup">recup datas</button>
+
+    <div id="result"></div>
+
+      <input type="text">
+
+    <script>
+        $(document).ready(function ()
+        {
+            $('#recup').click(function ()
+            {
+                // requete GET sur localhost:8089
+                axios
+                    .get('http://localhost:8089/jsf')
+                    .then((response) => 
+                    {
+                        console.log(response.data)
+                        // foreach sur response.data (each en jquery)
+                        // afficher la liste des shop
+                        // avec les infos
+                        // shop_name : drawer : ticket.
+                        $.each(response.data, function (i, item)
+                        {
+                            let result = '<h2>' + item.shop_name + '</h2>';
+                            result += '<p><b>drawer : </b>'+ item.drawer +'</p>';
+                            result += '<p><b>ticket : </b>'+ item.ticket +'</p>';
+                            $("#result").append(result);
+                        })
+                    })
+                    .catch((error) => console.log(error));
+            })
+
+            $('input').blur( function()
+            {
+              console.log("res :", $(this).val() );
+              axios.post('http://localhost:8089/datas', { data: $(this).val()} );
+            });
+        })
+    </script>
+  </body>
+</html>
